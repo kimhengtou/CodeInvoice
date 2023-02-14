@@ -1231,6 +1231,8 @@ function unitToBaseQty(qty, unitObj) {
             break;
         default:
             return parseFloat(qty);
+           
+            
     }
 }
 

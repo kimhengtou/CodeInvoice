@@ -246,7 +246,7 @@ class Sma
             }
             return $date;
         }
-        return '0000-00-00';
+        return 'COD';
     }
 
     public function generate_pdf($content, $name = 'download.pdf', $output_type = null, $footer = null, $margin_bottom = null, $header = null, $margin_top = null, $orientation = 'P')
@@ -281,7 +281,7 @@ class Sma
         if ($sdate) {
             return date($this->dateFormats['php_sdate'], strtotime($sdate));
         }
-        return '0000-00-00';
+        return 'COD';
     }
 
     public function in_group($check_group, $id = false)
@@ -404,7 +404,7 @@ class Sma
         }
         return "<img src='data:image/svg+xml;base64," . base64_encode($svgData) . "' alt='{$text}' class='qrimg' width='100' height='100' style='max-width:" . ($size * 40) . 'px;max-height:' . ($size * 40) . "px;'' />";
     }
-
+    // round
     public function roundMoney($num, $nearest = 0.05)
     {
         return round($num * (1 / $nearest)) * $nearest;

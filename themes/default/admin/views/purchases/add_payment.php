@@ -163,6 +163,12 @@
                 $('.pcash_1').hide();
                 $('.pcheque_1').show();
                 $('#cheque_no_1').focus();
+                //ABA 
+            } else if (p_val == 'ABA'){
+                $('.pcheque_1').hide();
+                $('.pcash_1').hide();
+                $('.pcc_1').show();
+                $('#pcc_no_1').focus();
             } else {
                 $('.pcheque_1').hide();
                 $('.pcc_1').hide();

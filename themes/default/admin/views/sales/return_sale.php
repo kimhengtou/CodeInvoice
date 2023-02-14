@@ -77,6 +77,11 @@
                 $('.pcheque_1').hide();
                 $('.pcc_1').hide();
                 $('.pcash_1').show();
+                $('#rpaidby').val(p_val);
+            if (p_val == 'ABA') {
+                $('.pcheque_1').hide();
+                $('.pcc_1').hide();
+                $('.pcash_1').show();
                 //$('#amount_1').focus();
             } else if (p_val == 'CC') {
                 $('.pcheque_1').hide();
@@ -97,11 +102,17 @@
                 $('.gc').show();
                 $('.ngc').hide();
                 $('#gift_card_no').focus();
+            } if(p_val == 'ABA'){
+                $('.gc').show();
+                $('.ngc').hide();
+                $('#ABA').focus();
+            
             } else {
                 $('.ngc').show();
                 $('.gc').hide();
                 $('#gc_details').html('');
             }
+
         });
         /* ------------------------------
          * Sell Gift Card modal

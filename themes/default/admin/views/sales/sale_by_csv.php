@@ -189,6 +189,7 @@
 
                         <div class="col-md-4">
                             <div class="form-group">
+                                
                                 <?= lang('order_discount', 'sldiscount'); ?>
                                 <?php echo form_input('order_discount', '', 'class="form-control input-tip" id="sldiscount"'); ?>
                             </div>

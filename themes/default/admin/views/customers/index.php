@@ -99,8 +99,10 @@
                             <th style="min-width:30px; width: 30px; text-align: center;">
                                 <input class="checkbox checkth" type="checkbox" name="check"/>
                             </th>
-                            <th><?= lang('company'); ?></th>
-                            <th><?= lang('name'); ?></th>
+                            <!-- company -->
+                            <th><?= lang('Name'); ?></th>
+                            <!-- Name -->
+                            <th><?= lang('Code_of_customer'); ?></th>
                             <th><?= lang('email_address'); ?></th>
                             <th><?= lang('phone'); ?></th>
                             <th><?= lang('price_group'); ?></th>

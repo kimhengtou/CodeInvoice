@@ -45,6 +45,8 @@ class Pay extends MY_Shop_Controller
                     'currency_code' => $this->default_currency->code,
                     'cancel_return' => urldecode(site_url('pay/pipn')),
                     'amount'        => (($inv->grand_total - $inv->paid) + $paypal_fee),
+                    // ExchangKH
+                    'Exchang KH'    => (($inv->total_KH - $inv->paid ) + $paypal_fee),
                     'image_url'     => base_url() . 'assets/uploads/logos/' . $this->Settings->logo,
                     'business'      => (DEMO ? 'saleem-facilitator@tecdiary.com' : $paypal->account_email),
                     'custom'        => $inv->reference_no . '__' . ($inv->grand_total - $inv->paid) . '__' . $paypal_fee,
@@ -344,3 +346,7 @@ class Pay extends MY_Shop_Controller
         exit();
     }
 }
+
+
+
+

@@ -1316,9 +1316,9 @@ table.DTFC_Cloned tr.even {
 div.DTFC_RightHeadWrapper table,
 div.DTFC_LeftHeadWrapper table {
     margin-bottom: 0 !important;
-    border-top-right-radius: 0 !important;
+    /* border-top-right-radius: 0 !important;
     border-bottom-left-radius: 0 !important;
-    border-bottom-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important; */
 }
 div.DTFC_RightHeadWrapper table thead tr:last-child th:first-child,
 div.DTFC_RightHeadWrapper table thead tr:last-child td:first-child,

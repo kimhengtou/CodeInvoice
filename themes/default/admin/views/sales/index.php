@@ -16,7 +16,7 @@
             },
             'fnRowCallback': function (nRow, aData, iDisplayIndex) {
                 var oSettings = oTable.fnSettings();
-                //$("td:first", nRow).html(oSettings._iDisplayStart+iDisplayIndex +1);
+                // $("td:first", nRow).html(oSettings._iDisplayStart+iDisplayIndex +1);
                 nRow.id = aData[0];
                 nRow.setAttribute('data-return-id', aData[11]);
                 nRow.className = "invoice_link re"+aData[11];
@@ -38,8 +38,10 @@
             }
         }).fnSetFilteringDelay().dtFilter([
             {column_number: 1, filter_default_label: "[<?=lang('date');?> (yyyy-mm-dd)]", filter_type: "text", data: []},
-            {column_number: 2, filter_default_label: "[<?=lang('reference_no');?>]", filter_type: "text", data: []},
-            {column_number: 3, filter_default_label: "[<?=lang('biller');?>]", filter_type: "text", data: []},
+            // {column_number: 1, filter_default_label: "[<?=lang('payment');?> (yyyy-mm-dd)]", filter_type: "text", data: []},
+            {column_number: 2, filter_default_label: "[<?=lang('Reference_No');?>]", filter_type: "text", data: []},
+            // {column_number: 3, filter_default_label: "[<?=lang('biller');?>]", filter_type: "text", data: []},
+            {column_number: 3, filter_default_label: "[<?=lang('Biller');?> (yyyy-mm-dd)]", filter_type: "text", data: []},
             {column_number: 4, filter_default_label: "[<?=lang('customer');?>]", filter_type: "text", data: []},
             {column_number: 5, filter_default_label: "[<?=lang('sale_status');?>]", filter_type: "text", data: []},
             {column_number: 9, filter_default_label: "[<?=lang('payment_status');?>]", filter_type: "text", data: []},
@@ -57,6 +59,10 @@
             }
             if (localStorage.getItem('slref')) {
                 localStorage.removeItem('slref');
+            }
+            // slpayment_term
+            if (localStorage.getItem('slpayment_term')){
+                localStorage.removeItem('slpayment_term');
             }
             if (localStorage.getItem('slshipping')) {
                 localStorage.removeItem('slshipping');
@@ -76,12 +82,22 @@
             if (localStorage.getItem('slbiller')) {
                 localStorage.removeItem('slbiller');
             }
+            if (localStorage.getItem('slpayment_term')) {
+                localStorage.removeItem('slpayment_term');
+            }
+            if (localStorage.getItem('ldate')) {
+                localStorage.removeItem('ldate');
+            }
             if (localStorage.getItem('slcurrency')) {
                 localStorage.removeItem('slcurrency');
             }
             if (localStorage.getItem('sldate')) {
                 localStorage.removeItem('sldate');
             }
+            if (localStorage.getItem('slpayment_term')) {
+                localStorage.removeItem('slpayment_term');
+            }
+
             if (localStorage.getItem('slsale_status')) {
                 localStorage.removeItem('slsale_status');
             }
@@ -135,6 +151,10 @@
         if (localStorage.getItem('slref')) {
             localStorage.removeItem('slref');
         }
+        // slpayment_term
+        if (localStorage.getItem('slpayment_term')){
+            localStorage.removeItem('slpayment_term');
+        }
         if (localStorage.getItem('slshipping')) {
             localStorage.removeItem('slshipping');
         }
@@ -153,11 +173,20 @@
         if (localStorage.getItem('slbiller')) {
             localStorage.removeItem('slbiller');
         }
+        if (localStorage.getItem('ldate')) {
+                localStorage.removeItem('ldate');
+            }
+        if (localStorage.getItem('slpayment_term')) {
+                localStorage.removeItem('slpaymant_term');
+            }
         if (localStorage.getItem('slcurrency')) {
             localStorage.removeItem('slcurrency');
         }
         if (localStorage.getItem('sldate')) {
             localStorage.removeItem('sldate');
+        }
+        if (localStorage.getItem('slpayment_term')) {
+            localStorage.removeItem('slpayment_term');
         }
         if (localStorage.getItem('slsale_status')) {
             localStorage.removeItem('slsale_status');
@@ -198,7 +227,6 @@
             <?php $this->sma->unset_data('remove_slls');
         }
         ?>
-
         $(document).on('click', '.sledit', function (e) {
             if (localStorage.getItem('slitems')) {
                 e.preventDefault();
@@ -304,22 +332,27 @@
                 <p class="introtext"><?=lang('list_results');?></p>
 
                 <div class="table-responsive">
-                    <table id="SLData" class="table table-bordered table-hover table-striped" cellpadding="0" cellspacing="0" border="0">
+                    <table id="SLData"  class="table table-bordered table-condensed table-hover table-striped" cellpadding="0" cellspacing="0" border="0">
                         <thead>
-                        <tr>
+                        <tr> 
+                            gh;ja;ija;iang
                             <th style="min-width:30px; width: 30px; text-align: center;">
                                 <input class="checkbox checkft" type="checkbox" name="check"/>
                             </th>
                             <th><?= lang('date'); ?></th>
-                            <th><?= lang('reference_no'); ?></th>
+                            <th><?= lang('Reference_No'); ?></th>
                             <th><?= lang('biller'); ?></th>
-                            <th><?= lang('customer'); ?></th>
+                            <th><?= lang('customerrr'); ?></th>
                             <th><?= lang('sale_status'); ?></th>
                             <th><?= lang('grand_total'); ?></th>
                             <th><?= lang('paid'); ?></th>
                             <th><?= lang('balance'); ?></th>
                             <th><?= lang('payment_status'); ?></th>
-                            <th style="min-width:30px; width: 30px; text-align: center;"><i class="fa fa-chain"></i></th>
+                            <!-- <th style="min-width:30px; width: 30px; text-align: center;"><i class="fa fa-chain"></i></th> -->
+                            <th style="min-width:100px;"><?=lang('Due_DDdate')
+                           
+                            ?></th>
+
                             <th></th>
                             <th style="width:80px; text-align:center;"><?= lang('actions'); ?></th>
                         </tr>

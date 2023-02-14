@@ -73,6 +73,14 @@
                 <a href="<?= admin_url('logout'); ?>" class="btn">
                     <span class="fa fa-sign-out"></span>
                 </a>
+
+
+
+
+
+
+
+
             </div>
             <div class="header-nav">
                 <ul class="nav navbar-nav pull-right">
@@ -160,6 +168,8 @@
                         </li>
                         <?php
                     } ?>
+
+<!-- add task -->
                     <?php if ($events) {
                         ?>
                         <li class="dropdown hidden-xs">
@@ -641,6 +651,54 @@
                                 <a class="submenu" href="<?= admin_url('notifications'); ?>">
                                     <i class="fa fa-info-circle"></i><span class="text"> <?= lang('notifications'); ?></span>
                                 </a>
+                            </li>
+
+                            <!-- <li class="mm_task">
+                                <a class="submenu" href="<?= admin_url('task'); ?>">
+                                    <i class="fa fa-info-circle"></i><span class="text"> <?= lang('Task'); ?></span>
+                                </a>
+                            </li> -->
+
+                            <!-- test task  -->
+                           
+                            <li class="mm_task">
+                                <a class="dropmenu" href="#">
+                                    <i class="fa fa-star"></i>
+                                    <span class="text"> <?= lang('payment method'); ?>
+                                    </span> <span class="chevron closed"></span>
+                                </a>
+                                <ul>
+                                    <li id="task_index">
+                                        <!-- <a class="submenu" href="<?= admin_url('task'); ?>">
+                                            <i class="fa fa-star"></i>
+                                            <span class="text"> <?= lang('list_payment'); ?></span>
+                                        </a> -->
+                                    </li>
+                                    <li id="task_add">
+                                        <a class="submenu" href="<?= admin_url('task/add'); ?>">
+                                            <i class="fa fa-plus-circle"></i>
+                                            <span class="text"> <?= lang('add_payment'); ?></span>
+                                        </a>
+                                    </li>
+                                    <!-- <li id="task_tasks_by_csv">
+                                        <a class="submenu" href="<?= admin_url('task/tasks_by_csv'); ?>">
+                                            <i class="fa fa-plus-circle"></i>
+                                            <span class="text"> <?= lang('add_tasks_by_csv'); ?></span>
+                                        </a>
+                                    </li>
+                                    <li id="task_expenses">
+                                        <a class="submenu" href="<?= admin_url('task/expenses'); ?>">
+                                            <i class="fa fa-dollar"></i>
+                                            <span class="text"> <?= lang('list_expense'); ?></span>
+                                        </a>
+                                    </li>
+                                    <li id="task_add_expense">
+                                        <a class="submenu" href="<?= admin_url('task/add_expense'); ?>" data-toggle="modal" data-target="#myModal">
+                                            <i class="fa fa-plus-circle"></i>
+                                            <span class="text"> <?= lang('add_expense'); ?></span>
+                                        </a>
+                                    </li> -->
+                                </ul>
                             </li>
                             <li class="mm_calendar">
                                 <a class="submenu" href="<?= admin_url('calendar'); ?>">

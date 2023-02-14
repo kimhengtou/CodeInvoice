@@ -40,11 +40,11 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group company">
-                        <?= lang('company', 'company'); ?>
+                        <?= lang('Name', 'company'); ?>
                         <?php echo form_input('company', $customer->company, 'class="form-control tip" id="company" required="required"'); ?>
                     </div>
                     <div class="form-group person">
-                        <?= lang('name', 'name'); ?>
+                        <?= lang('Code_of_Customer', 'name'); ?>
                         <?php echo form_input('name', $customer->name, 'class="form-control tip" id="name" required="required"'); ?>
                     </div>
                     <div class="form-group">
@@ -60,9 +60,11 @@
                     <?php //echo form_input('contact_person', $customer->contact_person, 'class="form-control" id="contact_person" required="required"');?>
                 </div> -->
                     <div class="form-group">
-                        <?= lang('email_address', 'email_address'); ?>
+                         <?= lang('Email_address', 'email_address'); ?>
+                        <!-- <?= lang('email_address', 'email_address'); ?>
                         <input type="email" name="email" class="form-control" required="required" id="email_address"
-                               value="<?= $customer->email ?>"/>
+                               value="<?= $customer->email ?>"/> -->
+                               <input type="email" name="email" class="form-control"  id="email_address"/>
                     </div>
                     <div class="form-group">
                         <?= lang('phone', 'phone'); ?>
@@ -74,8 +76,12 @@
                         <?php echo form_input('address', $customer->address, 'class="form-control" id="address" required="required"'); ?>
                     </div>
                     <div class="form-group">
+                        <!-- <?= lang('city', 'city'); ?>
+                        <?php echo form_input('city', $customer->city, 'class="form-control" id="city" required="required"'); ?> -->
                         <?= lang('city', 'city'); ?>
-                        <?php echo form_input('city', $customer->city, 'class="form-control" id="city" required="required"'); ?>
+                        <!-- <?php echo form_input('city', '', 'class="form-control" id="city"'); ?> -->
+                        <!-- <?php echo form_input('city', '', 'class="form-control" id="city" required="required"'); ?> -->
+                        <?php echo form_input('city', '', 'class="form-control" id="city" '); ?>
                     </div>
                     <div class="form-group">
                         <?= lang('state', 'state'); ?>

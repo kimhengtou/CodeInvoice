@@ -31,7 +31,7 @@
                         foreach ($price_groups as $price_group) {
                             $pgs[$price_group->id] = $price_group->name;
                         }
-                        echo form_dropdown('price_group', $pgs, $Settings->price_group, 'class="form-control select" id="price_group" style="width:100%;"');
+                        echo form_dropdown('price_group', $pgs, $Settings->price_group, 'class="form-control select" id="price_group" style="width:100%;" required="required"');
                         ?>
                     </div>
                 </div>
@@ -40,11 +40,11 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group company">
-                        <?= lang('company', 'company'); ?>
+                        <?= lang('Name', 'company'); ?>
                         <?php echo form_input('company', '', 'class="form-control tip" id="company" data-bv-notempty="true"'); ?>
                     </div>
                     <div class="form-group person">
-                        <?= lang('name', 'name'); ?>
+                        <?= lang('Code_of_Customer', 'name'); ?>
                         <?php echo form_input('name', '', 'class="form-control tip" id="name" data-bv-notempty="true"'); ?>
                     </div>
                     <div class="form-group">
@@ -61,7 +61,9 @@
                 </div>-->
                     <div class="form-group">
                         <?= lang('email_address', 'email_address'); ?>
-                        <input type="email" name="email" class="form-control" required="required" id="email_address"/>
+                        <!-- <?php echo form_input('email_address', '', 'class="form-control" id="email_address"'); ?> -->
+                        <!-- <input type="email" name="email" class="form-control" required="required" id="email_address"/> -->
+                        <input type="email" name="email" class="form-control"  id="email_address"/>
                     </div>
                     <div class="form-group">
                         <?= lang('phone', 'phone'); ?>
@@ -73,7 +75,9 @@
                     </div>
                     <div class="form-group">
                         <?= lang('city', 'city'); ?>
-                        <?php echo form_input('city', '', 'class="form-control" id="city" required="required"'); ?>
+                        <!-- <?php echo form_input('city', '', 'class="form-control" id="city"'); ?> -->
+                        <!-- <?php echo form_input('city', '', 'class="form-control" id="city" required="required"'); ?> -->
+                        <?php echo form_input('city', '', 'class="form-control" id="city" '); ?>
                     </div>
                     <div class="form-group">
                         <?= lang('state', 'state'); ?>
@@ -130,7 +134,29 @@
 
         </div>
         <div class="modal-footer">
-            <?php echo form_submit('add_customer', lang('add_customer'), 'class="btn btn-primary"'); ?>
+       
+      
+        <!-- <div class="btn-group btn-group-justified">
+                        <div class="btn-group">
+                           
+                            <?php if($inv->status == 'completed') { ?>
+                                <a href="<?= admin_url('sales/add/' . $inv->id) ?>" class="tip btn btn-primary disabled" title="Quatation already completed. Create sale is not allow.">
+                                    <i class="fa fa-heart"></i>
+                                    <span class="hidden-sm hidden-xs"><?= lang('create_sale') ?></span>
+                                </a>
+                            <?php } else { ?>
+                                <a href="<?= admin_url('sales/add/' . $inv->id) ?>" class="tip btn btn-primary" title="">
+                                    <i class="fa fa-heart"></i>
+                                    <span class="hidden-sm hidden-xs"><?= lang('create_sale') ?></span>
+                                </a>
+
+                            <?php } ?>
+                        </div> -->
+
+
+
+
+            <?php echo form_submit('add_customer', lang('aadd_customer'), 'class="btn btn-primary"'); ?>
         </div>
     </div>
     <?php echo form_close(); ?>

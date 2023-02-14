@@ -165,3 +165,25 @@ class Ceiling
         }
     }
 }
+// int_argumentsOK
+
+// private static function argumentsOk(int $number, int $significance)
+// {
+//     if (empty($number * $significance)) {
+//         return 0;
+//     }
+//     if (Helpers::returnSign($number) == Helpers::returnSign($significance)) {
+//         return ceil($number / $significance) * $significance;
+//     }
+
+//     return ExcelError::NAN();
+// }
+
+// private static function floorCheck1Arg(): void
+// {
+//     $compatibility = Functions::getCompatibilityMode();
+//     if ($compatibility === Functions::COMPATIBILITY_EXCEL) {
+//         throw new Exception('Excel requires 2 arguments for CEILING');
+//     }
+// }
+// }

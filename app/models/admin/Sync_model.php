@@ -139,6 +139,34 @@ class Sync_model extends CI_Model
         return false;
     }
 
+    //customer_name
+    // public function importCustomerss()
+    // {
+    //     $customerss = $this->getAllCustomerss();
+    //     if ($customerss) {
+    //         foreach ($customerss as $customerr) {
+    //             $cname = $customerr->name;
+    //             unset($customerr->name);
+    //             $customerr->group_id            = 3;
+    //             $customerr->group_name          = 'customerr';
+    //             $customerr->customer_group_id   = 1;
+    //             $customerr->customer_group_name = 'General';
+    //             $this->db->insert('companies', $customerr);
+    //             $customerr_name = $this->db->insert_name();
+    //             $names[]       = ['new' => $customerr_name, 'old' => $cname];
+    //         }
+    //         if (isset($names)) {
+    //             krsort($names);
+    //             foreach ($names as $name) {
+    //                 $this->db->update('sales', ['customerr_name' => $name['new']], ['customerr_name' => $name['old']]);
+    //                 $this->db->update('quotes', ['customerr_name' => $name['new']], ['customerr_name' => $name['old']]);
+    //             }
+    //         }
+    //         return true;
+    //     }
+    //     return false;
+    // }
+
     public function importSuppliers()
     {
         $suppliers = $this->getAllSuppliers();

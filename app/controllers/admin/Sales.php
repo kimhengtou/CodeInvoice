@@ -48,6 +48,7 @@ class Sales extends MY_Controller
 
         if ($this->form_validation->run() == true) {
             $reference = $this->input->post('reference_no') ? $this->input->post('reference_no') : $this->site->getReference('so');
+            $payment_term = $this->input->post('payment_term') ? $this->input->post('payment_term') : $this->site->getReference('so');
             if ($this->Owner || $this->Admin) {
                 $date = $this->sma->fld(trim($this->input->post('date')));
             } else {
@@ -55,6 +56,8 @@ class Sales extends MY_Controller
             }
             $warehouse_id     = $this->input->post('warehouse');
             $customer_id      = $this->input->post('customer');
+            
+            // $exchange_rate      = $this->input->post('exchange_rate');
             $biller_id        = $this->input->post('biller');
             $total_items      = $this->input->post('total_items');
             $sale_status      = $this->input->post('sale_status');
@@ -165,8 +168,11 @@ class Sales extends MY_Controller
             $total_tax      = $this->sma->formatDecimal(($product_tax + $order_tax), 4);
             // $grand_total    = $this->sma->formatDecimal(($this->sma->formatDecimal($total) + $this->sma->formatDecimal($total_tax) + $this->sma->formatDecimal($shipping) - $this->sma->formatDecimal($order_discount)), 4);
             $grand_total = $this->sma->formatDecimal(($total + $total_tax + $this->sma->formatDecimal($shipping) - $this->sma->formatDecimal($order_discount)), 4);
+            // $total_KH = $this->sma->formatDecimal(($total + $total_tax + $this->sma->formatDecimal($shipping) - $this->sma->formatDecimal($order_discount)), 4);
+            $total_KH = 4100;
             $data        = ['date'  => $date,
                 'reference_no'      => $reference,
+                // 'payment_term'      => $payment
                 'customer_id'       => $customer_id,
                 'customer'          => $customer,
                 'biller_id'         => $biller_id,
@@ -185,6 +191,7 @@ class Sales extends MY_Controller
                 'total_tax'         => $total_tax,
                 'shipping'          => $this->sma->formatDecimal($shipping),
                 'grand_total'       => $grand_total,
+               
                 'total_items'       => $total_items,
                 'sale_status'       => $sale_status,
                 'payment_status'    => $payment_status,
@@ -193,6 +200,7 @@ class Sales extends MY_Controller
                 'paid'              => 0,
                 'created_by'        => $this->session->userdata('user_id'),
                 'hash'              => hash('sha256', microtime() . mt_rand()),
+                // 'exchange_rate'          =>$exchange_rate
             ];
             if ($this->Settings->indian_gst) {
                 $data['cgst'] = $total_cgst;
@@ -210,10 +218,12 @@ class Sales extends MY_Controller
                 if ($this->input->post('paid_by') == 'gift_card') {
                     $gc            = $this->site->getGiftCardByNO($this->input->post('gift_card_no'));
                     $amount_paying = $grand_total >= $gc->balance ? $gc->balance : $grand_total;
+                    // $amount_paying = $total_KH >=$gc->balance ? $gc->balance : $total_KH;
                     $gc_balance    = $gc->balance - $amount_paying;
                     $payment       = [
                         'date'         => $date,
                         'reference_no' => $this->input->post('payment_reference_no'),
+                        'payment_term' => $this->input->post('payment_payment_term'),
                         'amount'       => $this->sma->formatDecimal($amount_paying),
                         'paid_by'      => $this->input->post('paid_by'),
                         'cheque_no'    => $this->input->post('cheque_no'),
@@ -231,6 +241,7 @@ class Sales extends MY_Controller
                     $payment = [
                         'date'         => $date,
                         'reference_no' => $this->input->post('payment_reference_no'),
+                        'payment_term' => $this->input->post('payment_payment_term'),
                         'amount'       => $this->sma->formatDecimal($this->input->post('amount-paid')),
                         'paid_by'      => $this->input->post('paid_by'),
                         'cheque_no'    => $this->input->post('cheque_no'),
@@ -269,6 +280,7 @@ class Sales extends MY_Controller
                     $this->data['quote'] = $this->sales_model->getInvoiceByID($sale_id);
                     $items               = $this->sales_model->getAllInvoiceItems($sale_id);
                 }
+                
                 krsort($items);
                 $c = rand(100000, 9999999);
                 foreach ($items as $item) {
@@ -350,6 +362,11 @@ class Sales extends MY_Controller
         }
     }
 
+
+    // /..............................quote..............................\
+   
+   
+
     public function add_delivery($id = null)
     {
         $this->sma->checkPermissions();
@@ -367,6 +384,7 @@ class Sales extends MY_Controller
             $this->edit_delivery($delivery->id);
         } else {
             $this->form_validation->set_rules('sale_reference_no', lang('sale_reference_no'), 'required');
+            $this->form_validation->set_rules('sale_payment_term', lang('sale_payment_term'), 'required');
             $this->form_validation->set_rules('customer', lang('customer'), 'required');
             $this->form_validation->set_rules('address', lang('address'), 'required');
 
@@ -380,7 +398,9 @@ class Sales extends MY_Controller
                     'date'              => $date,
                     'sale_id'           => $this->input->post('sale_id'),
                     'do_reference_no'   => $this->input->post('do_reference_no') ? $this->input->post('do_reference_no') : $this->site->getReference('do'),
+                    'do_payment_term'   => $this->input->post('do_payment_term') ? $this->input->post('do_payment_term') : $this->site->getReference('do'),
                     'sale_reference_no' => $this->input->post('sale_reference_no'),
+                    'sale_payment_term' => $this->input->post('sale_payment_term'),
                     'customer'          => $this->input->post('customer'),
                     'address'           => $this->input->post('address'),
                     'status'            => $this->input->post('status'),
@@ -409,6 +429,7 @@ class Sales extends MY_Controller
                 if ($sale->shop) {
                     $this->load->library('sms');
                     $this->sms->delivering($sale->id, $dlDetails['do_reference_no']);
+                    $this->sma->delivering($sale->id, $dlDetails['do_payment_term']);
                 }
                 $this->session->set_flashdata('error', validation_errors());
                 redirect($_SERVER['HTTP_REFERER']);
@@ -423,6 +444,7 @@ class Sales extends MY_Controller
                 $this->data['address']         = $this->site->getAddressByID($sale->address_id);
                 $this->data['inv']             = $sale;
                 $this->data['do_reference_no'] = ''; //$this->site->getReference('do');
+                $this->data['do_payment_term'] = '';
                 $this->data['modal_js']        = $this->site->modal_js();
 
                 $this->load->view($this->theme . 'sales/add_delivery', $this->data);
@@ -521,6 +543,7 @@ class Sales extends MY_Controller
                 'date'         => $date,
                 'sale_id'      => $this->input->post('sale_id'),
                 'reference_no' => $this->input->post('reference_no') ? $this->input->post('reference_no') : $this->site->getReference('pay'),
+                'payment_term' => $this->input->post('payment_term') ? $this->input->post('payment_term') : $this->site->getRefernce('pay'),
                 'amount'       => $this->input->post('amount-paid'),
                 'paid_by'      => $this->input->post('paid_by'),
                 'cheque_no'    => $this->input->post('cheque_no'),
@@ -561,6 +584,7 @@ class Sales extends MY_Controller
             if ($sale->shop) {
                 $this->load->library('sms');
                 $this->sms->paymentReceived($sale->id, $payment['reference_no'], $payment['amount']);
+                $this->sma->paymentReceived($sale->id, $payment['payment_term'], $payment['amount']);
             }
             $this->session->set_flashdata('message', lang('payment_added'));
             redirect($_SERVER['HTTP_REFERER']);
@@ -592,6 +616,7 @@ class Sales extends MY_Controller
             $this->data['customer']    = $this->site->getCompanyByID($inv->customer_id);
             $this->data['payments']    = $this->sales_model->getPaymentsForSale($id);
             $this->data['biller']      = $this->site->getCompanyByID($inv->biller_id);
+            $this->data['due_date']    = $this->site->getCompanyByID($inv->due_date);
             $this->data['user']        = $this->site->getUser($inv->created_by);
             $this->data['warehouse']   = $this->site->getWarehouseByID($inv->warehouse_id);
             $this->data['inv']         = $inv;
@@ -741,7 +766,9 @@ class Sales extends MY_Controller
                     $this->excel->getActiveSheet()->setTitle(lang('deliveries'));
                     $this->excel->getActiveSheet()->SetCellValue('A1', lang('date'));
                     $this->excel->getActiveSheet()->SetCellValue('B1', lang('do_reference_no'));
+                    $this->excel->getActiveSheet()->SetCellValue('G1', lang('do-payment_term'));
                     $this->excel->getActiveSheet()->SetCellValue('C1', lang('sale_reference_no'));
+                    $this->excel->getActiveSheet()->SetCellValue('H1', lang('sale_payment_term'));
                     $this->excel->getActiveSheet()->SetCellValue('D1', lang('customer'));
                     $this->excel->getActiveSheet()->SetCellValue('E1', lang('address'));
                     $this->excel->getActiveSheet()->SetCellValue('F1', lang('status'));
@@ -751,7 +778,9 @@ class Sales extends MY_Controller
                         $delivery = $this->sales_model->getDeliveryByID($id);
                         $this->excel->getActiveSheet()->SetCellValue('A' . $row, $this->sma->hrld($delivery->date));
                         $this->excel->getActiveSheet()->SetCellValue('B' . $row, $delivery->do_reference_no);
+                        $this->excel->getActiveSheet()->SetCellValue('G' . $row, $delivery->do_payment_term);
                         $this->excel->getActiveSheet()->SetCellValue('C' . $row, $delivery->sale_reference_no);
+                        $this->excel->getActiveSheet()->SetCellValue('H' . $row, $delivery->sale_payment_term);
                         $this->excel->getActiveSheet()->SetCellValue('D' . $row, $delivery->customer);
                         $this->excel->getActiveSheet()->SetCellValue('E' . $row, $delivery->address);
                         $this->excel->getActiveSheet()->SetCellValue('F' . $row, lang($delivery->status));
@@ -795,13 +824,16 @@ class Sales extends MY_Controller
         }
         $this->form_validation->set_message('is_natural_no_zero', lang('no_zero_required'));
         $this->form_validation->set_rules('reference_no', lang('reference_no'), 'required');
+        $this->form_validation->set_rules('payment_term', lang('payment_term'), 'required');
         $this->form_validation->set_rules('customer', lang('customer'), 'required');
         $this->form_validation->set_rules('biller', lang('biller'), 'required');
+        $this->form_validation->set_rules('due_date', lang('due_date', 'required'));
         $this->form_validation->set_rules('sale_status', lang('sale_status'), 'required');
         $this->form_validation->set_rules('payment_status', lang('payment_status'), 'required');
 
         if ($this->form_validation->run() == true) {
             $reference = $this->input->post('reference_no');
+            $payment_term= $this->input->post('payment_term');
             if ($this->Owner || $this->Admin) {
                 $date = $this->sma->fld(trim($this->input->post('date')));
             } else {
@@ -916,6 +948,7 @@ class Sales extends MY_Controller
             $grand_total = $this->sma->formatDecimal(($total + $total_tax + $this->sma->formatDecimal($shipping) - $this->sma->formatDecimal($order_discount)), 4);
             $data        = ['date'  => $date,
                 'reference_no'      => $reference,
+                'payment_term'      => $payment_term,
                 'customer_id'       => $customer_id,
                 'customer'          => $customer,
                 'biller_id'         => $biller_id,
@@ -1062,7 +1095,9 @@ class Sales extends MY_Controller
         }
 
         $this->form_validation->set_rules('do_reference_no', lang('do_reference_no'), 'required');
+        $this->form_validation->set_rules('do_payment_term', lang('do_payment_term'), 'required');
         $this->form_validation->set_rules('sale_reference_no', lang('sale_reference_no'), 'required');
+        $this->form_validation->set_rules('sale_payment_term', lang('sale_payment_term'), 'required');
         $this->form_validation->set_rules('customer', lang('customer'), 'required');
         $this->form_validation->set_rules('address', lang('address'), 'required');
 
@@ -1070,7 +1105,9 @@ class Sales extends MY_Controller
             $dlDetails = [
                 'sale_id'           => $this->input->post('sale_id'),
                 'do_reference_no'   => $this->input->post('do_reference_no'),
+                'do_payment_term'   => $this->input->post('do_payment_term'),
                 'sale_reference_no' => $this->input->post('sale_reference_no'),
+                'sale_payment_term' => $this->input->post('sale_payment_term'),
                 'customer'          => $this->input->post('customer'),
                 'address'           => $this->input->post('address'),
                 'status'            => $this->input->post('status'),
@@ -1170,6 +1207,7 @@ class Sales extends MY_Controller
             $this->sma->md();
         }
         $this->form_validation->set_rules('reference_no', lang('reference_no'), 'required');
+        $this->form_validation->set_rules('payment_term', lang('payment_term'), 'required');
         $this->form_validation->set_rules('amount-paid', lang('amount'), 'required');
         $this->form_validation->set_rules('paid_by', lang('paid_by'), 'required');
         $this->form_validation->set_rules('userfile', lang('attachment'), 'xss_clean');
@@ -1194,6 +1232,7 @@ class Sales extends MY_Controller
                 'date'         => $date,
                 'sale_id'      => $this->input->post('sale_id'),
                 'reference_no' => $this->input->post('reference_no'),
+                'payment_term' => $this->input->post('payment_term'),
                 'amount'       => $this->input->post('amount-paid'),
                 'paid_by'      => $this->input->post('paid_by'),
                 'cheque_no'    => $this->input->post('cheque_no'),
@@ -1275,6 +1314,7 @@ class Sales extends MY_Controller
             $this->load->library('parser');
             $parse_data = [
                 'reference_number' => $inv->reference_no,
+                'payment_term_number'=> $inv->payment_term,
                 'contact_person'   => $customer->name,
                 'company'          => $customer->company && $customer->company != '-' ? '(' . $customer->company . ')' : '',
                 'order_link'       => $inv->shop ? shop_url('orders/' . $inv->id . '/' . ($this->loggedIn ? '' : $inv->hash)) : base_url(),
@@ -1921,6 +1961,7 @@ class Sales extends MY_Controller
 
             if ($this->input->post('amount-paid') && $this->input->post('amount-paid') > 0) {
                 $pay_ref = $this->input->post('payment_reference_no') ? $this->input->post('payment_reference_no') : $this->site->getReference('pay');
+                $pay_no  = $this->input->post('payment_payment_term') ? $this->input->post('payment_payment_term') : $this->site->getReference('pay');
                 $payment = [
                     'date'         => $date,
                     'reference_no' => $pay_ref,
@@ -2294,6 +2335,7 @@ class Sales extends MY_Controller
                     'reference_no' => $this->site->getReference('pay'),
                     'amount'       => $grand_total,
                     'paid_by'      => 'cash',
+                    // 'paid_by'      => 'ABA',
                     'cheque_no'    => '',
                     'cc_no'        => '',
                     'cc_holder'    => '',
@@ -2443,7 +2485,9 @@ class Sales extends MY_Controller
                     }
                 }
                 if ($customer_group->discount && $customer_group->percent < 0) {
+                    // $row->discount = (0 - $customer_group->percent) . '%';
                     $row->discount = (0 - $customer_group->percent) . '%';
+                    
                 } else {
                     $row->price = $row->price + (($row->price * $customer_group->percent) / 100);
                 }
@@ -2475,7 +2519,7 @@ class Sales extends MY_Controller
             $this->sma->send_json([['id' => 0, 'label' => lang('no_match_found'), 'value' => $term]]);
         }
     }
-
+    
     public function topup_gift_card($card_id)
     {
         $this->sma->checkPermissions('add_gift_card', true);

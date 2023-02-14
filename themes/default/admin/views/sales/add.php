@@ -13,6 +13,9 @@
             if (localStorage.getItem('sldiscount')) {
                 localStorage.removeItem('sldiscount');
             }
+            if (localStorage.getItem('sldexchange')) {
+                localStorage.removeItem('sldexchange');
+            }
             if (localStorage.getItem('sltax2')) {
                 localStorage.removeItem('sltax2');
             }
@@ -86,15 +89,21 @@
         }
         <?php if ($quote_id) {
     ?>
-        // localStorage.setItem('sldate', '<?= $this->sma->hrld($quote->date) ?>');
+        // localStorage.setItem('sldate', '<?= $this->sma->hrld($ldate) ?>');
         localStorage.setItem('slcustomer', '<?= $quote->customer_id ?>');
-        localStorage.setItem('slbiller', '<?= $quote->biller_id ?>');
+        // biller_id=biller->company 
+        // localStorage.setItem('slbiller', '<?= $quote->biller_id ?>');
+
+        localStorage.setItem('slpayment_term', '<?=$this->sma->hrsd($inv->due_date);?>');
         localStorage.setItem('slwarehouse', '<?= $quote->warehouse_id ?>');
         localStorage.setItem('slnote', '<?= str_replace(["\r", "\n"], '', $this->sma->decode_html($quote->note)); ?>');
         localStorage.setItem('sldiscount', '<?= $quote->order_discount_id ?>');
+        localStorage.setItem('slexchange', '<?= $quote->order_discount_id ?>');
         localStorage.setItem('sltax2', '<?= $quote->order_tax_id ?>');
         localStorage.setItem('slshipping', '<?= $quote->shipping ?>');
         localStorage.setItem('slitems', JSON.stringify(<?= $quote_items; ?>));
+        // payment_term_to_due_date
+        localStorage.setItem('payment_term', '<?= $quote->$due_date ?>');
         <?php
 } ?>
         <?php if ($this->input->get('customer')) {
@@ -132,6 +141,10 @@
         });
         if (slbiller = localStorage.getItem('slbiller')) {
             $('#slbiller').val(slbiller);
+        }
+        // slpayment_term
+        if (slpayment_term = localStorage.getItem('slpayment_term')) {
+            $('#slpayment_term').val(slpayment_term);
         }
         if (!localStorage.getItem('slref')) {
             localStorage.setItem('slref', '<?=$slnumber?>');
@@ -264,19 +277,34 @@
                                 <?php echo form_input('reference_no', ($_POST['reference_no'] ?? $slnumber), 'class="form-control input-tip" id="slref"'); ?>
                             </div>
                         </div>
+
+                        <!-- <div class="col-md-4">
+                            <div class="form-group">
+                                <?= lang('payment_term', 'slpayment_term'); ?>
+                                <?php echo form_input('payment_term', ($_POST['payment_term'] ?? $slnumber), 'class="form-control input-tip" id="slpayment_term"'); ?>
+                            </div> -->
+                        </div>
                         <?php if ($Owner || $Admin || !$this->session->userdata('biller_id')) {
                     ?>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <?= lang('biller', 'slbiller'); ?>
+                                    
                                     <?php
                                     $bl[''] = '';
+                                    // if you want to open biller box
                     foreach ($billers as $biller) {
                         $bl[$biller->id] = $biller->company && $biller->company != '-' ? $biller->company : $biller->name;
                     }
+                   
+                    // due_date
+                    // foreach ($due_date as $due_date){
+                    //     $due_date= $payment_term ? date('Y-m-d', strtotime('+' . $payment_term . ' days', strtotime($date))) : null;
+                    // }
                     echo form_dropdown('biller', $bl, ($_POST['biller'] ?? $Settings->default_biller), 'id="slbiller" data-placeholder="' . lang('select') . ' ' . lang('biller') . '" required="required" class="form-control input-tip select" style="width:100%;"'); ?>
                                 </div>
                             </div>
+                        
                         <?php
                 } else {
                     $biller_input = [
@@ -284,11 +312,11 @@
                         'name'  => 'biller',
                         'id'    => 'slbiller',
                         'value' => $this->session->userdata('biller_id'),
+                       
                     ];
 
                     echo form_input($biller_input);
                 } ?>
-
                         <div class="clearfix"></div>
                         <div class="col-md-12">
                             <div class="panel panel-warning">
@@ -445,9 +473,26 @@
                         <?php if ($Owner || $Admin || $this->session->userdata('allow_discount')) {
                                                 ?>
                             <div class="col-md-4">
+
+                            <!-- button discont -->
                                 <div class="form-group">
                                     <?= lang('order_discount', 'sldiscount'); ?>
                                     <?php echo form_input('order_discount', '', 'class="form-control input-tip" id="sldiscount"'); ?>
+                                    
+                                </div>
+                            </div>
+                            <?php
+                                            } ?>
+
+                        <?php if ($Owner || $Admin || $this->session->userdata('allow_discount')) {
+                                                ?>
+                            <div class="col-md-4">
+
+                            <!-- button exchang rate -->
+                                <div class="form-group">
+                                    <?= lang('exchange_rate', 'slexchange'); ?>
+                                    <?php echo form_input('exchange_rate', '', 'class="form-control input-tip" required="required" id="slexchange"'); ?>
+                                    
                                 </div>
                             </div>
                         <?php
@@ -510,6 +555,13 @@
                                                     <?= lang('payment_reference_no', 'payment_reference_no'); ?>
                                                     <?= form_input('payment_reference_no', ($_POST['payment_reference_no'] ?? $payment_ref), 'class="form-control tip" id="payment_reference_no"'); ?>
                                                 </div>
+                                            </div>
+
+                                            <!-- <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <?= lang('payment_payment_term', 'payment_payment_term'); ?>
+                                                    <?= form_input('payment_payment_term', ($_POST['payment_payment_term'] ?? $payment_payment_term), 'class="form-control tip" id="payment_payment_term"'); ?>
+                                                </div> -->
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="payment">
@@ -624,10 +676,7 @@
 
                                     </div>
                                 </div>
-
-
                             </div>
-
                         </div>
                         <div class="col-md-12">
                             <div
@@ -644,6 +693,7 @@
                             <?php if ($Owner || $Admin || $this->session->userdata('allow_discount')) {
                             ?>
                             <td><?= lang('order_discount') ?> <span class="totals_val pull-right" id="tds">0.00</span></td>
+                            <td><?= lang('Exchang_Rate') ?> <span class="totals_val pull-right" id="tds">0.00</span></td>
                             <?php
                         }?>
                             <?php if ($Settings->tax2) {
@@ -653,6 +703,8 @@
                         } ?>
                             <td><?= lang('shipping') ?> <span class="totals_val pull-right" id="tship">0.00</span></td>
                             <td><?= lang('grand_total') ?> <span class="totals_val pull-right" id="gtotal">0.00</span></td>
+                            <td><?= lang('total_KH') ?> <span class="totals_val pull-right" id="ktotal">0.00</span></td>
+
                         </tr>
                     </table>
                 </div>

@@ -8,7 +8,7 @@
  * Find your timezone here
  * http://php.net/manual/en/timezones.php
  */
-    $timezone = 'Asia/Phnom_Penh';
+    $timezone = 'Asia/Bangkok';
     if (function_exists('date_default_timezone_set')) {
         date_default_timezone_set($timezone);
     }
@@ -41,8 +41,8 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-    // define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
-    define('ENVIRONMENT', 'production');
+    define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+    // define('ENVIRONMENT', 'production');
 
 /*
  *---------------------------------------------------------------

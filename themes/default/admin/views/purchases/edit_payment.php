@@ -47,6 +47,26 @@
                                     </div>
                                 </div>
                             </div>
+
+
+
+                            <div class="clearfix"></div>
+            <div id="payments">
+
+                <div class="well well-sm well_1">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="payment">
+                                    <div class="form-group">
+                                        <?= lang('ABA', 'ABA_1'); ?>
+                                        <input name="amount-paid"
+                                               value="<?= $this->sma->formatDecimal($payment->ABA); ?>" type="text"
+                                               id="amount_1" class="pa form-control kb-pad amount" required="required"/>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <?= lang('paying_by', 'paid_by_1'); ?>

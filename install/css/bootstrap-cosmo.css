@@ -2048,7 +2048,7 @@ table {
 }
 
 .table-bordered {
-  border: 1px solid #dddddd;
+  border: 1px solid #ede9e9;
   border-collapse: separate;
   *border-collapse: collapse;
   border-left: 0;

@@ -40,6 +40,8 @@ class Quotes extends MY_Controller
             }
             $warehouse_id     = $this->input->post('warehouse');
             $customer_id      = $this->input->post('customer');
+            //customer_name
+            // $customer_name    = $this->$input->post('customer')
             $biller_id        = $this->input->post('biller');
             $supplier_id      = $this->input->post('supplier');
             $status           = $this->input->post('status');

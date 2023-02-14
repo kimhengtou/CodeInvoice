@@ -362,8 +362,14 @@ $lang['payment_reference_no']             = 'Payment Reference No';
 $lang['gift_card_no']                     = 'Gift Card No';
 $lang['paying_by']                        = 'Paying by';
 $lang['cash']                             = 'Cash';
-$lang['gift_card']                        = 'Gift Card';
-$lang['CC']                               = 'Credit Card';
+//GGGift Card 
+// $lang['gift_card']                        = 'Gift Card';
+//Wing
+//ACLEDA
+$lang['gift_card']                        = 'ACLEDA';
+//ABA
+// $lang['CC']                               = 'Credit Card';
+$lang['CC']                               = 'ABA';
 $lang['cheque']                           = 'Cheque';
 $lang['cc_no']                            = 'Credit Card No';
 $lang['cc_holder']                        = 'Holder Name';
@@ -423,6 +429,8 @@ $lang['returned']                         = 'Returned';
 $lang['award_points']                     = 'Award Points';
 $lang['expenses']                         = 'Expenses';
 $lang['add_expense']                      = 'Add Expense';
+//ACLEDA
+// $lang['other']                            = 'Other';
 $lang['other']                            = 'Other';
 $lang['none']                             = 'None';
 $lang['calculator']                       = 'Calculator';

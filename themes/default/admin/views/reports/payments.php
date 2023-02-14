@@ -365,7 +365,7 @@ if ($this->input->post('end_date')) {
                             <th><?= lang('payment_ref'); ?></th>
                             <th><?= lang('sale_ref'); ?></th>
                             <th><?= lang('purchase_ref'); ?></th>
-                            <th><?= lang('paid_by'); ?></th>
+                            <th><?= lang('Ppaid_by'); ?></th>
                             <th><?= lang('amount'); ?></th>
                             <th><?= lang('type'); ?></th>
                             <th><?= lang('id'); ?></th>

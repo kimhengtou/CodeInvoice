@@ -162,6 +162,7 @@
                                 <?php
                             } ?>
                             <td style="width: 80px; text-align:center; vertical-align:middle;"><?= $this->sma->formatQuantity($row->unit_quantity) . ' ' . $row->product_unit_code; ?></td>
+                            <!-- <td style="width: 80px; text-align:center; vertical-align:middle;"><?= $this->sma->echo(round($row->unit_quantity,0,PHP_ROUND_HALF_UP)) . ' ' . $row->product_unit_code; ?></td> -->
                             <td style="text-align:right; width:100px;"><?= $this->sma->formatMoney($row->unit_price); ?></td>
                             <?php
                             if ($Settings->tax1 && $inv->product_tax > 0) {
@@ -298,10 +299,19 @@
                     } ?>
                     <div class="btn-group btn-group-justified">
                         <div class="btn-group">
-                            <a href="<?= admin_url('sales/add/' . $inv->id) ?>" class="tip btn btn-primary" title="<?= lang('create_sale') ?>">
-                                <i class="fa fa-heart"></i>
-                                <span class="hidden-sm hidden-xs"><?= lang('create_sale') ?></span>
-                            </a>
+                            <!-- create sale -->
+                            <?php if($inv->status == 'completed') { ?>
+                                <a href="<?= admin_url('sales/add/' . $inv->id) ?>" class="tip btn btn-primary disabled" title="Quatation already completed. Create sale is not allow.">
+                                    <i class="fa fa-heart"></i>
+                                    <span class="hidden-sm hidden-xs"><?= lang('create_sale') ?></span>
+                                </a>
+                            <?php } else { ?>
+                                <a href="<?= admin_url('sales/add/' . $inv->id) ?>" class="tip btn btn-primary" title="">
+                                    <i class="fa fa-heart"></i>
+                                    <span class="hidden-sm hidden-xs"><?= lang('create_sale') ?></span>
+                                </a>
+
+                            <?php } ?>
                         </div>
                         <div class="btn-group">
                             <a href="<?= admin_url('purchases/add/' . $inv->id) ?>" class="tip btn btn-primary" title="<?= lang('create_purchase') ?>">

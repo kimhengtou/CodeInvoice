@@ -1,5 +1,7 @@
 <?php defined('BASEPATH') or exit('No direct script access allowed'); ?>
 <script>
+
+   
     $(document).ready(function () {
         oTable = $('#POData').dataTable({
             "aaSorting": [[1, "desc"], [2, "desc"]],

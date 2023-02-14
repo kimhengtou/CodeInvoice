@@ -153,6 +153,7 @@
                             <th><?= lang('supplier'); ?></th>
                             <th><?= lang('total'); ?></th>
                             <th><?= lang('status'); ?></th>
+                            <!-- <th><?= lang('Hello'); ?></th> -->
                             <th style="min-width:30px; width: 30px; text-align: center;"><i class="fa fa-chain"></i></th>
                             <th style="width:115px; text-align:center;"><?= lang('actions'); ?></th>
                         </tr>

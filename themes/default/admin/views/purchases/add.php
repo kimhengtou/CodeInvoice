@@ -307,7 +307,7 @@
                             <div class="panel panel-warning">
                                 <div
                                     class="panel-heading"><?= lang('please_select_these_before_adding_product') ?></div>
-                                <div class="panel-body" style="padding: 5px;">
+                                <div class="panel-body" style="padding: 50px;">
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <?= lang('supplier', 'posupplier'); ?>

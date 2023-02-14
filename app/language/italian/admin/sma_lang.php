@@ -423,6 +423,7 @@ $lang['returned']                         = 'Returned';
 $lang['award_points']                     = 'Award Points';
 $lang['expenses']                         = 'Expenses';
 $lang['add_expense']                      = 'Add Expense';
+//Other
 $lang['other']                            = 'Other';
 $lang['none']                             = 'None';
 $lang['calculator']                       = 'Calculator';

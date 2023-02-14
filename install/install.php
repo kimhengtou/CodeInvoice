@@ -11,7 +11,8 @@ $indexFile    = '../index.php';
 $configFolder = '../app/config';
 $configFile   = '../app/config/config.php';
 $dbFile       = '../app/config/database.php';
-if (is_file($installFile)) {
+
+if (true) {
     $step = $_GET['step'] ?? '';
     switch ($step) {
         default: ?>

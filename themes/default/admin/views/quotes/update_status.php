@@ -32,7 +32,11 @@
                             <tr>
                                 <td><?= lang('status'); ?></td>
                                 <td><strong><?= lang($inv->status); ?></strong></td>
+                                
                             </tr>
+                            <!-- <tr>
+                                <td><?= lang('Helle'); ?></td>
+                            </tr> -->
                         </tbody>
                     </table>
                 </div>

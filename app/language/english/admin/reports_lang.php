@@ -63,7 +63,9 @@ $lang['payments_sent']            = 'Payments Sent';
 $lang['payments_received']        = 'Payments Received';
 $lang['cheque']                   = 'Cheque';
 $lang['cash']                     = 'Cash';
-$lang['CC']                       = 'Credit Card';
+// $lang['CC']                       = 'Credit Card';
+//ABA 
+$lang['CC']                       = 'ABA';
 $lang['paypal_pro']               = 'Paypal Pro';
 $lang['stripe']                   = 'Stripe';
 $lang['cc_slips']                 = 'CC Slips';

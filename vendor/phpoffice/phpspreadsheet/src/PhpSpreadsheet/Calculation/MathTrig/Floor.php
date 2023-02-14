@@ -193,3 +193,23 @@ class Floor
         return ExcelError::NAN();
     }
 }
+// int_argumentsOK
+
+// private static function argumentsOk(int $number, int $significance)
+// {
+//     if ($significance == 0) {
+//         return ExcelError::DIV0();
+//     }
+//     if ($number == 0) {
+//         return 0;
+//     }
+//     if (Helpers::returnSign($significance) == 1) {
+//         return ceil($number / $significance) * $significance;
+//     }
+//     if (Helpers::returnSign($number) == -1 && Helpers::returnSign($significance) == -1) {
+//         return ceil($number / $significance) * $significance;
+//     }
+
+//     return ExcelError::NAN();
+// }
+// }

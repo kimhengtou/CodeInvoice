@@ -46,11 +46,66 @@ $(document).ready(function (e) {
     } else {
         nsCustomer();
     }
-
+//customer_name
+// $(document).ready(function (e) {
+//     $('body a, body button').attr('tabindex', -1);
+//     check_add_item_val();
+//     if (site.settings.set_focus != 1) {
+//         $('#add_item').focus();
+//     }
+//     var $customerr = $('#slcustomerr');
+//     $customerr.change(function (e) {
+//         localStorage.setItem('slcustomerr', $(this).val());
+//         //$('#slcustomer_id').val($(this).val());
+//     });
+//     if ((slcustomerr = localStorage.getItem('slcustomerr'))) {
+//         $customerr.val(slcustomerr).select2({
+//             minimumInputLength: 1,
+//             data: [],
+//             initSelection: function (element, callback) {
+//                 $.ajax({
+//                     type: 'get',
+//                     async: false,
+//                     url: site.base_url + 'customerss/getCustomerr/' + $(element).val(),
+//                     dataType: 'json',
+//                     success: function (data) {
+//                         callback(data[0]);
+//                     },
+//                 });
+//             },
+//             ajax: {
+//                 url: site.base_url + 'customerss/suggestions',
+//                 dataType: 'json',
+//                 quietMillis: 15,
+//                 data: function (term, page) {
+//                     return {
+//                         term: term,
+//                         limit: 10,
+//                     };
+//                 },
+//                 results: function (data, page) {
+//                     if (data.results != null) {
+//                         return { results: data.results };
+//                     } else {
+//                         return { results: [{ id: '', text: 'No Match Found' }] };
+//                     }
+//                 },
+//             },
+//         });
+//     } else {
+//         nsCustomerr();
+//     }
     // Order level shipping and discount localStorage
     if ((sldiscount = localStorage.getItem('sldiscount'))) {
         $('#sldiscount').val(sldiscount);
     }
+
+        // Order level shipping and discount localStorage
+        if ((slexchange = localStorage.getItem('slexchange'))) {
+            $('#exchange_rate').val(slexchange);
+        }
+
+
     $('#sltax2').change(function (e) {
         localStorage.setItem('sltax2', $(this).val());
         $('#sltax2').val($(this).val());
@@ -329,6 +384,9 @@ $(document).ready(function (e) {
                 if (localStorage.getItem('sldiscount')) {
                     localStorage.removeItem('sldiscount');
                 }
+                if (localStorage.getItem('slexchange')) {
+                    localStorage.removeItem('slexchange');
+                }
                 if (localStorage.getItem('sltax2')) {
                     localStorage.removeItem('sltax2');
                 }
@@ -350,6 +408,9 @@ $(document).ready(function (e) {
                 if (localStorage.getItem('slcustomer')) {
                     localStorage.removeItem('slcustomer');
                 }
+                // if (localStorage.getItem('slcustomerr')) {
+                //     localStorage.removeItem('slcustomerr');
+                // }
                 if (localStorage.getItem('slcurrency')) {
                     localStorage.removeItem('slcurrency');
                 }
@@ -490,6 +551,26 @@ $(document).ready(function (e) {
                 return;
             }
         });
+
+        // Order discount calculation
+        var old_slexchange;
+        $('#slexchange')
+            .focus(function () {
+                old_slexchange = $(this).val();
+            })
+            .change(function () {
+                var new_discount = $(this).val() ? $(this).val() : '0';
+                if (is_valid_discount(new_discount)) {
+                    localStorage.removeItem('slexchange');
+                    localStorage.setItem('slexchange', new_discount);
+                    loadItems();
+                    return;
+                } else {
+                    $(this).val(old_slexchange);
+                    bootbox.alert(lang.unexpected_value);
+                    return;
+                }
+            });
 
     /* ----------------------
      * Delete Row Method
@@ -866,6 +947,8 @@ $(document).ready(function (e) {
             slitems = {};
             if ($('#slwarehouse').val() && $('#slcustomer').val()) {
                 $('#slcustomer').select2('readonly', true);
+                //slcustomerr
+                // $('#slcustomerr').select2('readonly', true);
                 $('#slwarehouse').select2('readonly', true);
             } else {
                 bootbox.alert(lang.select_above);
@@ -883,6 +966,8 @@ $(document).ready(function (e) {
             gcname = $('#gcname').val(),
             gcvalue = $('#gcvalue').val(),
             gccustomer = $('#gccustomer').val(),
+            //customerr
+            // gccustomer = $('#gccustomerr').val(),
             gcexpiry = $('#gcexpiry').val() ? $('#gcexpiry').val() : '',
             gcprice = parseFloat($('#gcprice').val());
         if (gccode == '' || gcvalue == '' || gcprice == '' || gcvalue == 0 || gcprice == 0) {
@@ -1162,6 +1247,7 @@ function loadItems() {
         invoice_tax = 0;
         product_discount = 0;
         order_discount = 0;
+        order_exchange = 0;
         total_discount = 0;
 
         $('#slTable tbody').empty();
@@ -1432,6 +1518,23 @@ function loadItems() {
             //total_discount += parseFloat(order_discount);
         }
 
+                // Order level discount calculations
+                if ((slexchange = localStorage.getItem('slexchange'))) {
+                    var ds = slexchange;
+                    if (ds.indexOf('%') !== -1) {
+                        var pds = ds.split('%');
+                        if (!isNaN(pds[0])) {
+                            order_exchange = formatDecimal((total * parseFloat(pds[0])) / 100, 4);
+                        } else {
+                            order_exchange = formatDecimal(ds);
+                        }
+                    } else {
+                        order_exchange = formatDecimal(ds);
+                    }
+        
+                    //total_discount += parseFloat(order_discount);
+                }
+
         // Order level tax calculations
         if (site.settings.tax2 != 0) {
             if ((sltax2 = localStorage.getItem('sltax2'))) {
@@ -1459,7 +1562,10 @@ function loadItems() {
             $('#ttax2').text(formatMoney(invoice_tax));
         }
         $('#tship').text(formatMoney(shipping));
-        $('#gtotal').text(formatMoney(gtotal));
+
+        $('#gtotal').text(formatMoney(gtotal)); 
+        $('#ktotal').text(formatMoney(gtotal * order_exchange));
+
         if (an > parseInt(site.settings.bc_fix) && parseInt(site.settings.bc_fix) > 0) {
             $('html, body').animate({ scrollTop: $('#sticker').offset().top }, 500);
             $(window).scrollTop($(window).scrollTop() + 1);

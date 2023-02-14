@@ -319,6 +319,23 @@ $allow_discount = ($Owner || $Admin || $this->session->userdata('allow_discount'
                                 <?php echo form_input('order_discount', '', 'class="form-control input-tip" id="sldiscount" ' . ($allow_discount ? '' : 'readonly="true"')); ?>
                             </div>
                         </div>
+
+
+
+                        <?php
+                                            } ?>
+
+                        <?php if ($Owner || $Admin || $this->session->userdata('allow_discount')) {
+                                                ?>
+                            <div class="col-md-4">
+
+                            <!-- button exchang rate -->
+                                <div class="form-group">
+                                    <?= lang('exchange_rate', 'slexchange'); ?>
+                                    <?php echo form_input('exchange_rate', '', 'class="form-control input-tip" id="slexchange"'); ?>
+                                    
+                                </div>
+                            </div>
                         <?php
                                             } ?>
 
@@ -404,6 +421,7 @@ $allow_discount = ($Owner || $Admin || $this->session->userdata('allow_discount'
                                 } ?>
                             <td><?= lang('shipping') ?> <span class="totals_val pull-right" id="tship">0.00</span></td>
                             <td><?= lang('grand_total') ?> <span class="totals_val pull-right" id="gtotal">0.00</span></td>
+                            <td><?= lang('total_KH') ?> <span class="totals_val pull-right" id="ktotal">0.00</span></td>
                         </tr>
                     </table>
                 </div>
